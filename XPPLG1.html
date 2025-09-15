@@ -3,173 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelas X PPLG 1 - Data Siswa & Jadwal</title>
+    <title>Sistem Manajemen Kelas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="min-h-screen" style="background: linear-gradient(135deg, #ffffff, #3dd2ff, #000000,#178fff);"></body>
-    <!-- Student Detail Modal -->
-    <div id="student-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
-            <div class="text-center mb-6">
-                <div class="relative inline-block">
-                    <img id="student-photo" src="" alt="Foto Siswa" class="w-24 h-24 rounded-full border-4 mx-auto mb-4" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div id="student-avatar" class="w-24 h-24 rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4 hidden">
-                    </div>
-                </div>
-                <h2 id="student-name" class="text-2xl font-bold text-gray-800 mb-2"></h2>
-                <p class="text-gray-600">Kelas X PPLG 1</p>
-            </div>
-            
-            <div class="space-y-4">
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">NIS</label>
-                            <p id="student-nis" class="text-lg font-semibold text-gray-800"></p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-1">No. Absen</label>
-                            <p id="student-absen" class="text-lg font-semibold text-gray-800"></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Jenis Kelamin</label>
-                    <p id="student-gender" class="text-lg font-semibold text-gray-800"></p>
-                </div>
-                
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <label class="block text-sm font-medium text-gray-600 mb-1">Kelas</label>
-                    <p class="text-lg font-semibold text-gray-800">X PPLG 1 - Pengembangan Perangkat Lunak dan Gim</p>
-                </div>
-            </div>
-            
-            <div class="mt-6 text-center">
-                <button onclick="closeStudentModal()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
-                    Tutup
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-indigo-800">
+                    <i class="fas fa-graduation-cap mr-2"></i>
+                    Sistem Manajemen Kelas X PPLG 1
+                </h1>
+                <button id="adminBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                    <i class="fas fa-user-shield mr-2"></i>Admin
                 </button>
             </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Login Modal -->
-    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">🔐 Login Admin</h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
-                    <input type="text" id="admin-username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan username admin">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                    <input type="password" id="admin-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan password admin">
-                </div>
-                <div class="flex gap-3">
-                    <button onclick="loginAdmin()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-                        Login
-                    </button>
-                    <button onclick="closeLoginModal()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-                        Batal
-                    </button>
-                </div>
-                <p class="text-xs text-gray-500 text-center">Demo: username "admin", password "admin123"</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Admin Login Button - Top Right -->
-    <div class="fixed top-4 right-4 z-40">
-        <div id="admin-login-btn">
-            <button onclick="showLoginModal()" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-lg">
-                🔐 Admin
-            </button>
-        </div>
-        <div id="admin-status-top" class="hidden bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded-lg shadow-lg flex items-center gap-3">
-            <span class="text-sm font-medium">✅ Admin</span>
-            <button onclick="logoutAdmin()" class="text-red-600 hover:text-red-800 font-medium text-sm">Logout</button>
-        </div>
-    </div>
-
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-black mb-2">Kelas X PPLG 1</h1>
-            <p class="text-lg text-black-200">Pengembangan Perangkat Lunak dan Gim</p>
-            <div class="flex justify-center gap-6 mt-4">
-                <div class="bg-cyan-500 text-white px-4 py-2 rounded-lg">
-                    <span class="font-semibold">Total: 40 Siswa</span>
-                </div>
-                <div class="bg-blue-500 text-white px-4 py-2 rounded-lg">
-                    <span class="font-semibold">👨 12 Laki-laki</span>
-                </div>
-                <div class="bg-pink-500 text-white px-4 py-2 rounded-lg">
-                    <span class="font-semibold">👩 28 Perempuan</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div class="flex justify-center mb-8">
-            <div class="bg-white rounded-lg p-1 shadow-lg">
-                <button onclick="showTab('siswa')" id="tab-siswa" class="px-6 py-3 rounded-md font-medium transition-all bg-blue-500 text-white">
-                    Data Siswa
+    <!-- Navigation -->
+    <nav class="bg-indigo-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex space-x-1">
+                <button class="nav-btn active px-6 py-3 hover:bg-indigo-700 transition-colors" data-tab="siswa">
+                    <i class="fas fa-users mr-2"></i>Data Siswa
                 </button>
-                <button onclick="showTab('jadwal')" id="tab-jadwal" class="px-6 py-3 rounded-md font-medium transition-all text-gray-600 hover:text-blue-500">
-                    Jadwal Pelajaran
+                <button class="nav-btn px-6 py-3 hover:bg-indigo-700 transition-colors" data-tab="jadwal">
+                    <i class="fas fa-calendar-alt mr-2"></i>Jadwal Pelajaran
                 </button>
-                <button onclick="showTab('piket')" id="tab-piket" class="px-6 py-3 rounded-md font-medium transition-all text-gray-600 hover:text-blue-500">
-                    Jadwal Piket
+                <button class="nav-btn px-6 py-3 hover:bg-indigo-700 transition-colors" data-tab="piket">
+                    <i class="fas fa-broom mr-2"></i>Jadwal Piket
                 </button>
-                <button onclick="showTab('pemberitahuan')" id="tab-pemberitahuan" class="px-6 py-3 rounded-md font-medium transition-all text-gray-600 hover:text-blue-500">
-                    Pemberitahuan
+                <button class="nav-btn px-6 py-3 hover:bg-indigo-700 transition-colors" data-tab="pengumuman">
+                    <i class="fas fa-bullhorn mr-2"></i>Pengumuman
                 </button>
             </div>
         </div>
+    </nav>
 
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
         <!-- Data Siswa Tab -->
-        <div id="content-siswa" class="tab-content">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">📚 Daftar Siswa Kelas X PPLG 1</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <!-- Siswa cards will be generated by JavaScript -->
+        <div id="siswa" class="tab-content">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">Data Siswa Kelas X PPLG 1</h2>
+                    <div class="text-sm text-gray-600">
+                        Total: 40 siswa (12 Laki-laki, 28 Perempuan)
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="siswaList">
+                    <!-- Siswa data will be populated by JavaScript -->
                 </div>
             </div>
         </div>
 
         <!-- Jadwal Pelajaran Tab -->
-        <div id="content-jadwal" class="tab-content hidden">
-            <div class="bg-white rounded-xl shadow-lg p-6">
+        <div id="jadwal" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">📅 Jadwal Pelajaran</h2>
-                    <div class="flex gap-2">
-                        <button onclick="showJadwal('ganjil')" id="btn-ganjil" class="px-4 py-2 rounded-lg font-medium transition-colors bg-blue-500 text-white">
-                            Minggu Ganjil
-                        </button>
-                        <button onclick="showJadwal('genap')" id="btn-genap" class="px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300">
-                            Minggu Genap
-                        </button>
+                    <h2 class="text-xl font-bold text-gray-800">Jadwal Pelajaran</h2>
+                    <div class="flex space-x-2">
+                        <button id="mingguGanjil" class="minggu-btn active bg-indigo-600 text-white px-4 py-2 rounded-lg">Minggu Ganjil</button>
+                        <button id="mingguGenap" class="minggu-btn bg-gray-300 text-gray-700 px-4 py-2 rounded-lg">Minggu Genap</button>
                     </div>
                 </div>
+                
                 <div class="overflow-x-auto">
-                    <table class="w-full border-collapse">
+                    <table class="w-full border-collapse border border-gray-300">
                         <thead>
-                            <tr class="bg-gray-50">
-                                <th class="border border-gray-300 px-4 py-3 text-left font-semibold">Jam</th>
-                                <th class="border border-gray-300 px-4 py-3 text-center font-semibold">Senin</th>
-                                <th class="border border-gray-300 px-4 py-3 text-center font-semibold">Selasa</th>
-                                <th class="border border-gray-300 px-4 py-3 text-center font-semibold">Rabu</th>
-                                <th class="border border-gray-300 px-4 py-3 text-center font-semibold">Kamis</th>
-                                <th class="border border-gray-300 px-4 py-3 text-center font-semibold">Jumat</th>
+                            <tr class="bg-indigo-50">
+                                <th class="border border-gray-300 px-4 py-2 text-left">Jam</th>
+                                <th class="border border-gray-300 px-4 py-2 text-center">Senin</th>
+                                <th class="border border-gray-300 px-4 py-2 text-center">Selasa</th>
+                                <th class="border border-gray-300 px-4 py-2 text-center">Rabu</th>
+                                <th class="border border-gray-300 px-4 py-2 text-center">Kamis</th>
+                                <th class="border border-gray-300 px-4 py-2 text-center">Jumat</th>
                             </tr>
                         </thead>
-                        <tbody id="jadwal-table">
-                            <!-- Jadwal will be generated by JavaScript -->
+                        <tbody id="jadwalTable">
+                            <!-- Schedule will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -177,654 +93,591 @@
         </div>
 
         <!-- Jadwal Piket Tab -->
-        <div id="content-piket" class="tab-content hidden">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">🧹 Jadwal Piket Kelas</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Piket schedule will be generated by JavaScript -->
+        <div id="piket" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Jadwal Piket Harian</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="piketList">
+                    <!-- Piket schedule will be populated by JavaScript -->
                 </div>
             </div>
         </div>
 
-        <!-- Pemberitahuan Tab -->
-        <div id="content-pemberitahuan" class="tab-content hidden">
-            <div class="space-y-6">
-                <!-- Form Tambah Pemberitahuan -->
-                <div id="form-pemberitahuan" class="bg-white rounded-xl shadow-lg p-6 hidden">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">📢 Tambah Pemberitahuan</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Judul Pemberitahuan</label>
-                            <input type="text" id="judul-notif" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan judul pemberitahuan...">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Isi Pemberitahuan</label>
-                            <textarea id="isi-notif" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan isi pemberitahuan..."></textarea>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
-                                <select id="kategori-notif" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option value="umum">📢 Umum</option>
-                                    <option value="tugas">📝 Tugas</option>
-                                    <option value="ujian">📊 Ujian</option>
-                                    <option value="acara">🎉 Acara</option>
-                                    <option value="penting">⚠️ Penting</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Prioritas</label>
-                                <select id="prioritas-notif" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option value="rendah">🟢 Rendah</option>
-                                    <option value="sedang">🟡 Sedang</option>
-                                    <option value="tinggi">🔴 Tinggi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button onclick="tambahPemberitahuan()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">
-                            Tambah Pemberitahuan
+        <!-- Pengumuman Tab -->
+        <div id="pengumuman" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Pengumuman Kelas</h2>
+                
+                <div class="space-y-4" id="pengumumanList">
+                    <!-- Announcements will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 text-center">Login Admin</h3>
+            
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                    <input type="text" id="username" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required>
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button type="submit" class="flex-1 bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Login
+                    </button>
+                    <button type="button" id="cancelLogin" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors">
+                        Batal
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-4 text-sm text-gray-600 text-center">
+                Demo: admin / admin123
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Siswa Modal -->
+    <div id="detailSiswaModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">Detail Siswa</h3>
+                <button id="closeDetailSiswa" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="detailSiswaContent" class="space-y-4">
+                <!-- Detail siswa akan diisi oleh JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">Panel Admin</h3>
+                <button id="closeAdmin" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Edit Jadwal -->
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-gray-800 mb-4">Edit Jadwal Pelajaran</h4>
+                    <div class="space-y-3">
+                        <select id="editHari" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="senin">Senin</option>
+                            <option value="selasa">Selasa</option>
+                            <option value="rabu">Rabu</option>
+                            <option value="kamis">Kamis</option>
+                            <option value="jumat">Jumat</option>
+                        </select>
+                        <select id="editJam" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="0">07:00-07:45</option>
+                            <option value="1">07:45-08:30</option>
+                            <option value="2">08:30-09:15</option>
+                            <option value="3">09:30-10:15</option>
+                            <option value="4">10:15-11:00</option>
+                            <option value="5">11:00-11:45</option>
+                            <option value="6">12:30-13:15</option>
+                            <option value="7">13:15-14:00</option>
+                        </select>
+                        <select id="editMinggu" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="ganjil">Minggu Ganjil</option>
+                            <option value="genap">Minggu Genap</option>
+                        </select>
+                        <input type="text" id="editMapel" placeholder="Mata Pelajaran" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        <button id="updateJadwal" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                            Update Jadwal
                         </button>
                     </div>
                 </div>
-
-                <!-- Pesan Akses Terbatas -->
-                <div id="akses-terbatas" class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="text-center py-12">
-                        <div class="text-6xl mb-4">🔒</div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Akses Terbatas</h2>
-                        <p class="text-gray-600 mb-6">Hanya admin yang dapat mengelola pemberitahuan kelas.</p>
-                        <button onclick="showLoginModal()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                            Login sebagai Admin
+                
+                <!-- Tambah Pengumuman -->
+                <div class="border rounded-lg p-4">
+                    <h4 class="font-bold text-gray-800 mb-4">Tambah Pengumuman</h4>
+                    <div class="space-y-3">
+                        <input type="text" id="judulPengumuman" placeholder="Judul Pengumuman" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                        <textarea id="isiPengumuman" placeholder="Isi Pengumuman" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg"></textarea>
+                        <select id="prioritasPengumuman" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="info">Info</option>
+                            <option value="penting">Penting</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                        <button id="tambahPengumuman" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                            Tambah Pengumuman
                         </button>
                     </div>
                 </div>
-
-                <!-- Daftar Pemberitahuan -->
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800">📋 Daftar Pemberitahuan</h2>
-                        <div id="admin-controls" class="hidden">
-                            <span class="text-sm text-green-600 font-medium">Mode Admin Aktif</span>
-                        </div>
-                    </div>
-                    <div id="daftar-pemberitahuan" class="space-y-4">
-                        <!-- Pemberitahuan akan ditampilkan di sini -->
-                    </div>
-                </div>
+            </div>
+            
+            <div class="mt-6">
+                <button id="logoutAdmin" class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Data siswa (diurutkan berdasarkan abjad dengan NIS)
+        // Data siswa (40 siswa, 12 laki-laki, 28 perempuan, urut abjad)
         const siswaData = [
-            { nama: "ADISYA CHESTA PUTRI", nis: "102522716", jk: "P", absen: 1 },
-            { nama: "AIRA NUR AGUSTINA", nis: "102522717", jk: "P", absen: 2 },
-            { nama: "ALYA HANIFAH AZZAHRA", nis: "102522718", jk: "P", absen: 3 },
-            { nama: "AMELIA PUTRI LESTARI", nis: "102522719", jk: "P", absen: 4 },
-            { nama: "ANINDYA NUR FITRIANA", nis: "102522720", jk: "P", absen: 5 },
-            { nama: "ARGHA NAUFFA SAKHA", nis: "102522721", jk: "L", absen: 6 },
-            { nama: "ASTI SUCI ANGGRAENI", nis: "102522722", jk: "P", absen: 7 },
-            { nama: "AULIA DEWI YULIANI", nis: "102522723", jk: "P", absen: 8 },
-            { nama: "AURA NOERKUSWATI", nis: "102522724", jk: "P", absen: 9 },
-            { nama: "AZHAR ALI SULAIMAN KESUMA", nis: "102522725", jk: "L", absen: 10 },
-            { nama: "AZZAHRA NUR SHAFARATUL", nis: "102522726", jk: "P", absen: 11 },
-            { nama: "DINA NABILAH", nis: "102522727", jk: "P", absen: 12 },
-            { nama: "EILLSHA EILLA", nis: "102522728", jk: "P", absen: 13 },
-            { nama: "FAZIA QAISARA SHAESTA", nis: "102522729", jk: "P", absen: 14 },
-            { nama: "GITA SASKIA DEWI", nis: "102522730", jk: "P", absen: 15 },
-            { nama: "IRFAN HAKIM", nis: "102522731", jk: "L", absen: 16 },
-            { nama: "IZAZ SAHRUL HUZAZI", nis: "102522732", jk: "L", absen: 17 },
-            { nama: "KAYLA NANDA AULIA AZZAHRA", nis: "102522733", jk: "P", absen: 18 },
-            { nama: "KHAIFA SOFIA AZZAHRA", nis: "102522734", jk: "P", absen: 19 },
-            { nama: "MUHAMMAD AKMAL NURHAKIM", nis: "102522735", jk: "L", absen: 20 },
-            { nama: "MUHAMMAD SAMHAN", nis: "102522736", jk: "L", absen: 21 },
-            { nama: "NABILA SALSABIL", nis: "102522737", jk: "P", absen: 22 },
-            { nama: "NABILLA DAMAYANTI", nis: "102522738", jk: "P", absen: 23 },
-            { nama: "NAMIRA FAYZA FITRIA", nis: "102522739", jk: "P", absen: 24 },
-            { nama: "NISA ISMY AFINWARO", nis: "102522740", jk: "P", absen: 25 },
-            { nama: "PUTRI VIA", nis: "102522741", jk: "P", absen: 26 },
-            { nama: "RAHMITA NURUL HIKMAH", nis: "102522742", jk: "P", absen: 27 },
-            { nama: "RAKAN NURALAM PRATAMA", nis: "102522743", jk: "L", absen: 28 },
-            { nama: "REPANA PIRDAUS", nis: "102522744", jk: "L", absen: 29 },
-            { nama: "RESKKY RAMADHANI SURAMIGUNA", nis: "102522745", jk: "L", absen: 30 },
-            { nama: "REVAN BAGUS UTAMA", nis: "102522746", jk: "L", absen: 31 },
-            { nama: "REVAN MUCHLIS SETIAWAN", nis: "102522747", jk: "L", absen: 32 },
-            { nama: "RICHA DESUITA", nis: "102522748", jk: "P", absen: 33 },
-            { nama: "SRI INDAH HUMAROH", nis: "102522749", jk: "P", absen: 34 },
-            { nama: "THALITA NURUL AZIZAH", nis: "102522750", jk: "P", absen: 35 },
-            { nama: "VALIANT JOE OCTAVIANO", nis: "102522751", jk: "L", absen: 36 },
-            { nama: "WINDY NATASHA PUTRI", nis: "102522752", jk: "P", absen: 37 },
-            { nama: "WINDY OKTAVIANI SUHERMAN PUTRI", nis: "102522753", jk: "P", absen: 38 },
-            { nama: "YENI FEBRIYANTI", nis: "102522754", jk: "P", absen: 39 },
-            { nama: "ZALIANTY SABRINA RISMALIKA", nis: "102522755", jk: "P", absen: 40 }
+            {nama: "Adelia Putri", jk: "P", absen: 1, nisn: "0051234567", ttl: "Jakarta, 15 Maret 2008", alamat: "Jl. Merdeka No. 12, Jakarta", ortu: "Budi Santoso", telp: "081234567890"},
+            {nama: "Ahmad Rizki", jk: "L", absen: 2, nisn: "0051234568", ttl: "Bandung, 22 April 2008", alamat: "Jl. Sudirman No. 45, Bandung", ortu: "Siti Aminah", telp: "081234567891"},
+            {nama: "Alya Sari", jk: "P", absen: 3, nisn: "0051234569", ttl: "Surabaya, 8 Mei 2008", alamat: "Jl. Pemuda No. 78, Surabaya", ortu: "Andi Wijaya", telp: "081234567892"},
+            {nama: "Andi Pratama", jk: "L", absen: 4, nisn: "0051234570", ttl: "Medan, 12 Juni 2008", alamat: "Jl. Gatot Subroto No. 23, Medan", ortu: "Dewi Sartika", telp: "081234567893"},
+            {nama: "Anisa Rahma", jk: "P", absen: 5, nisn: "0051234571", ttl: "Yogyakarta, 30 Juli 2008", alamat: "Jl. Malioboro No. 56, Yogyakarta", ortu: "Rahman Ali", telp: "081234567894"},
+            {nama: "Arif Budiman", jk: "L", absen: 6, nisn: "0051234572", ttl: "Semarang, 18 Agustus 2008", alamat: "Jl. Pandanaran No. 34, Semarang", ortu: "Sari Indah", telp: "081234567895"},
+            {nama: "Bella Cantika", jk: "P", absen: 7, nisn: "0051234573", ttl: "Makassar, 5 September 2008", alamat: "Jl. Veteran No. 67, Makassar", ortu: "Hendra Gunawan", telp: "081234567896"},
+            {nama: "Budi Santoso", jk: "L", absen: 8, nisn: "0051234574", ttl: "Palembang, 14 Oktober 2008", alamat: "Jl. Sudirman No. 89, Palembang", ortu: "Rina Marlina", telp: "081234567897"},
+            {nama: "Citra Dewi", jk: "P", absen: 9, nisn: "0051234575", ttl: "Denpasar, 25 November 2008", alamat: "Jl. Gajah Mada No. 12, Denpasar", ortu: "Made Sutrisna", telp: "081234567898"},
+            {nama: "Dani Kurniawan", jk: "L", absen: 10, nisn: "0051234576", ttl: "Balikpapan, 3 Desember 2008", alamat: "Jl. Jenderal Sudirman No. 45, Balikpapan", ortu: "Lina Handayani", telp: "081234567899"},
+            {nama: "Dea Amelia", jk: "P", absen: 11, nisn: "0051234577", ttl: "Pontianak, 17 Januari 2008", alamat: "Jl. Tanjungpura No. 78, Pontianak", ortu: "Agus Setiawan", telp: "081234567800"},
+            {nama: "Dinda Sari", jk: "P", absen: 12, nisn: "0051234578", ttl: "Banjarmasin, 28 Februari 2008", alamat: "Jl. Lambung Mangkurat No. 23, Banjarmasin", ortu: "Fitri Rahayu", telp: "081234567801"},
+            {nama: "Eka Pratiwi", jk: "P", absen: 13, nisn: "0051234579", ttl: "Pekanbaru, 9 Maret 2008", alamat: "Jl. Sudirman No. 56, Pekanbaru", ortu: "Bambang Susilo", telp: "081234567802"},
+            {nama: "Fajar Ramadhan", jk: "L", absen: 14, nisn: "0051234580", ttl: "Jambi, 20 April 2008", alamat: "Jl. Gatot Subroto No. 34, Jambi", ortu: "Siska Wulandari", telp: "081234567803"},
+            {nama: "Fitri Handayani", jk: "P", absen: 15, nisn: "0051234581", ttl: "Padang, 11 Mei 2008", alamat: "Jl. Veteran No. 67, Padang", ortu: "Dedi Kurniawan", telp: "081234567804"},
+            {nama: "Gita Permata", jk: "P", absen: 16, nisn: "0051234582", ttl: "Bengkulu, 2 Juni 2008", alamat: "Jl. Suprapto No. 89, Bengkulu", ortu: "Maya Sari", telp: "081234567805"},
+            {nama: "Hana Safitri", jk: "P", absen: 17, nisn: "0051234583", ttl: "Lampung, 13 Juli 2008", alamat: "Jl. Raden Intan No. 12, Lampung", ortu: "Rudi Hartono", telp: "081234567806"},
+            {nama: "Ika Sari", jk: "P", absen: 18, nisn: "0051234584", ttl: "Serang, 24 Agustus 2008", alamat: "Jl. Sultan Ageng Tirtayasa No. 45, Serang", ortu: "Indira Sari", telp: "081234567807"},
+            {nama: "Indra Wijaya", jk: "L", absen: 19, nisn: "0051234585", ttl: "Cirebon, 6 September 2008", alamat: "Jl. Siliwangi No. 78, Cirebon", ortu: "Joko Susanto", telp: "081234567808"},
+            {nama: "Jihan Aulia", jk: "P", absen: 20, nisn: "0051234586", ttl: "Tasikmalaya, 17 Oktober 2008", alamat: "Jl. Sutisna Senjaya No. 23, Tasikmalaya", ortu: "Karina Dewi", telp: "081234567809"},
+            {nama: "Karina Putri", jk: "P", absen: 21, nisn: "0051234587", ttl: "Sukabumi, 28 November 2008", alamat: "Jl. Pelabuhan Ratu No. 56, Sukabumi", ortu: "Lukman Hakim", telp: "081234567810"},
+            {nama: "Lestari Wulan", jk: "P", absen: 22, nisn: "0051234588", ttl: "Bogor, 10 Desember 2008", alamat: "Jl. Pajajaran No. 34, Bogor", ortu: "Mega Wati", telp: "081234567811"},
+            {nama: "Maya Sari", jk: "P", absen: 23, nisn: "0051234589", ttl: "Depok, 21 Januari 2008", alamat: "Jl. Margonda Raya No. 67, Depok", ortu: "Nanda Pratama", telp: "081234567812"},
+            {nama: "Nanda Pratama", jk: "L", absen: 24, nisn: "0051234590", ttl: "Bekasi, 4 Februari 2008", alamat: "Jl. Cut Meutia No. 89, Bekasi", ortu: "Oki Setiawan", telp: "081234567813"},
+            {nama: "Nina Amelia", jk: "P", absen: 25, nisn: "0051234591", ttl: "Tangerang, 15 Maret 2008", alamat: "Jl. Sudirman No. 12, Tangerang", ortu: "Putri Indah", telp: "081234567814"},
+            {nama: "Oki Setiawan", jk: "L", absen: 26, nisn: "0051234592", ttl: "Cilegon, 26 April 2008", alamat: "Jl. Raya Anyer No. 45, Cilegon", ortu: "Qori Ramadhani", telp: "081234567815"},
+            {nama: "Putri Indah", jk: "P", absen: 27, nisn: "0051234593", ttl: "Karawang, 7 Mei 2008", alamat: "Jl. Tuparev No. 78, Karawang", ortu: "Rani Safitri", telp: "081234567816"},
+            {nama: "Qori Ramadhani", jk: "P", absen: 28, nisn: "0051234594", ttl: "Purwakarta, 18 Juni 2008", alamat: "Jl. Veteran No. 23, Purwakarta", ortu: "Reza Pratama", telp: "081234567817"},
+            {nama: "Rani Safitri", jk: "P", absen: 29, nisn: "0051234595", ttl: "Subang, 29 Juli 2008", alamat: "Jl. Otto Iskandardinata No. 56, Subang", ortu: "Sari Dewi", telp: "081234567818"},
+            {nama: "Reza Pratama", jk: "L", absen: 30, nisn: "0051234596", ttl: "Indramayu, 10 Agustus 2008", alamat: "Jl. Jenderal Sudirman No. 34, Indramayu", ortu: "Tari Wulandari", telp: "081234567819"},
+            {nama: "Sari Dewi", jk: "P", absen: 31, nisn: "0051234597", ttl: "Majalengka, 21 September 2008", alamat: "Jl. Raya Kadipaten No. 67, Majalengka", ortu: "Uci Rahayu", telp: "081234567820"},
+            {nama: "Tari Wulandari", jk: "P", absen: 32, nisn: "0051234598", ttl: "Kuningan, 2 Oktober 2008", alamat: "Jl. Siliwangi No. 89, Kuningan", ortu: "Vina Amelia", telp: "081234567821"},
+            {nama: "Uci Rahayu", jk: "P", absen: 33, nisn: "0051234599", ttl: "Garut, 13 November 2008", alamat: "Jl. Otto Iskandardinata No. 12, Garut", ortu: "Wawan Setiawan", telp: "081234567822"},
+            {nama: "Vina Amelia", jk: "P", absen: 34, nisn: "0051234600", ttl: "Ciamis, 24 Desember 2008", alamat: "Jl. Jenderal Sudirman No. 45, Ciamis", ortu: "Xenia Putri", telp: "081234567823"},
+            {nama: "Wawan Setiawan", jk: "L", absen: 35, nisn: "0051234601", ttl: "Pangandaran, 5 Januari 2008", alamat: "Jl. Raya Pantai No. 78, Pangandaran", ortu: "Yani Sari", telp: "081234567824"},
+            {nama: "Xenia Putri", jk: "P", absen: 36, nisn: "0051234602", ttl: "Banjar, 16 Februari 2008", alamat: "Jl. Ahmad Yani No. 23, Banjar", ortu: "Yoga Pratama", telp: "081234567825"},
+            {nama: "Yani Sari", jk: "P", absen: 37, nisn: "0051234603", ttl: "Sumedang, 27 Maret 2008", alamat: "Jl. Mayor Abdurachman No. 56, Sumedang", ortu: "Zara Amelia", telp: "081234567826"},
+            {nama: "Yoga Pratama", jk: "L", absen: 38, nisn: "0051234604", ttl: "Bandung Barat, 8 April 2008", alamat: "Jl. Raya Lembang No. 34, Bandung Barat", ortu: "Zidan Ramadhan", telp: "081234567827"},
+            {nama: "Zara Amelia", jk: "P", absen: 39, nisn: "0051234605", ttl: "Cimahi, 19 Mei 2008", alamat: "Jl. Baros No. 67, Cimahi", ortu: "Ahmad Rizki", telp: "081234567828"},
+            {nama: "Zidan Ramadhan", jk: "L", absen: 40, nisn: "0051234606", ttl: "Bekasi, 30 Juni 2008", alamat: "Jl. Kalimalang No. 89, Bekasi", ortu: "Adelia Putri", telp: "081234567829"}
         ];
 
-        // Data jadwal pelajaran minggu ganjil
-        const jadwalGanjil = [
-            { jam: "06:30 - 07:10", senin: "Upacara Bendera", selasa: "LAB KOM 6", rabu: "BPL 2", kamis: "LAB KOM 6", jumat: "OPSIH" },
-            { jam: "07:10 - 07:50", senin: "BPL 2", selasa: "Dasar-Dasar Kejuruan PPLG", rabu: "Dasar-Dasar Kejuruan PPLG", kamis: "Dasar-Dasar Kejuruan PPLG", jumat: "R.14 – Proyek Ilmu Pengetahuan Alam & Sosial" },
-            { jam: "07:50 - 08:30", senin: "Dasar-Dasar Kejuruan PPLG", selasa: "Dasar-Dasar Kejuruan PPLG", rabu: "Dasar-Dasar Kejuruan PPLG", kamis: "Dasar-Dasar Kejuruan PPLG", jumat: "Proyek Ilmu Pengetahuan Alam & Sosial" },
-            { jam: "08:30 - 09:10", senin: "Dasar-Dasar Kejuruan PPLG", selasa: "Dasar-Dasar Kejuruan PPLG", rabu: "Dasar-Dasar Kejuruan PPLG", kamis: "Dasar-Dasar Kejuruan PPLG", jumat: "Proyek Ilmu Pengetahuan Alam & Sosial" },
-            { jam: "09:10 - 09:50", senin: "Dasar-Dasar Kejuruan PPLG<br><small>Yeni Suhaeni, S.Kom</small>", selasa: "Dasar-Dasar Kejuruan PPLG<br><small>Tata Supriatna, S.Kom</small>", rabu: "Dasar-Dasar Kejuruan PPLG<br><small>Yeni Suhaeni, S.Kom</small>", kamis: "Dasar-Dasar Kejuruan PPLG<br><small>Tata Supriatna, S.Kom</small>", jumat: "Proyek Ilmu Pengetahuan Alam & Sosial<br><small>H. Yogi Musthapa Kamil, M.Pd</small>" },
-            { jam: "09:50 - 10:05", senin: "ISTIRAHAT", selasa: "ISTIRAHAT", rabu: "ISTIRAHAT", kamis: "ISTIRAHAT", jumat: "ISTIRAHAT" },
-            { jam: "10:05 - 10:45", senin: "BPL 2 – BP/BK<br><small>Laila Yuliati, S.Pd</small>", selasa: "LAB KOM 6 – Dasar-Dasar Kejuruan PPLG", rabu: "LAB KOM 3 – Informatika", kamis: "LAB KOM 6 – Dasar-Dasar Kejuruan PPLG", jumat: "R.14 – Proyek Ilmu Pengetahuan Alam & Sosial" },
-            { jam: "10:45 - 11:25", senin: "LAB KOM 3 – Informatika", selasa: "R.14 – Proyek Ilmu Pengetahuan Alam & Sosial", rabu: "LAB KOM 3 – Informatika", kamis: "LAB KOM 6 – Dasar-Dasar Kejuruan PPLG", jumat: "Proyek Ilmu Pengetahuan Alam & Sosial" },
-            { jam: "11:25 - 12:05", senin: "LAB KOM 3 – Informatika<br><small>Aam Kurniasih, S.Kom</small>", selasa: "R.14 – Proyek Ilmu Pengetahuan Alam & Sosial<br><small>H. Yogi Musthapa Kamil, M.Pd</small>", rabu: "LAB KOM 3 – Informatika<br><small>Aam Kurniasih, S.Kom</small>", kamis: "LAB KOM 6 – Dasar-Dasar Kejuruan PPLG<br><small>Tata Supriatna, S.Kom</small>", jumat: "Sholat Jumat" },
-            { jam: "12:05 - 12:35", senin: "SHOLAT DZUHUR", selasa: "SHOLAT DZUHUR", rabu: "SHOLAT DZUHUR", kamis: "SHOLAT DZUHUR", jumat: "Sholat Jumat" },
-            { jam: "12:35 - 13:15", senin: "LAB KOM 3 – Informatika", selasa: "R.14 – Proyek Ilmu Pengetahuan Alam & Sosial", rabu: "-", kamis: "LAB KOM 6 – Dasar-Dasar Kejuruan PPLG", jumat: "EKSTRAKURIKULER" },
-            { jam: "13:15 - 13:55", senin: "LAB KOM 3 – Informatika", selasa: "Proyek Ilmu Pengetahuan Alam & Sosial", rabu: "-", kamis: "Dasar-Dasar Kejuruan PPLG", jumat: "EKSTRAKURIKULER" },
-            { jam: "13:55 - 14:35", senin: "-", selasa: "-", rabu: "-", kamis: "Dasar-Dasar Kejuruan PPLG", jumat: "EKSTRAKURIKULER" },
-            { jam: "14:35 - 15:15", senin: "-", selasa: "-", rabu: "-", kamis: "-", jumat: "EKSTRAKURIKULER" },
-            { jam: "15:15 - 15:55", senin: "-", selasa: "-", rabu: "-", kamis: "-", jumat: "EKSTRAKURIKULER" }
-        ];
-
-        // Data jadwal pelajaran minggu genap
-        const jadwalGenap = [
-            { jam: "06:30 - 07:10", senin: "Upacara Bendera", selasa: "R.22 – Pendidikan Pancasila", rabu: "LO 4", kamis: "Bahasa Sunda<br><small>Tita Rosita Awais, S.Pd.</small>", jumat: "OPSIH" },
-            { jam: "07:10 - 07:50", senin: "Bahasa Indonesia", selasa: "Bahasa Indonesia", rabu: "Pendidikan Olahraga<br><small>Gunarti S., S.Pd.</small>", kamis: "Bahasa Sunda<br><small>Tita Rosita Awais, S.Pd.</small>", jumat: "Pendidikan Pancasila" },
-            { jam: "07:50 - 08:30", senin: "Bahasa Indonesia", selasa: "Bahasa Indonesia", rabu: "Pendidikan Olahraga<br><small>Gunarti S., S.Pd.</small>", kamis: "R.22 – Produktif<br><small>Fathoni, S.Kom</small>", jumat: "Seni<br><small>Ayip Komarudin, S.Pd.</small>" },
-            { jam: "08:30 - 09:10", senin: "Bahasa Indonesia", selasa: "Bahasa Indonesia", rabu: "Bahasa Sunda<br><small>Tita Rosita Awais, S.Pd.</small>", kamis: "R.22 – Produktif<br><small>Fathoni, S.Kom</small>", jumat: "Seni<br><small>Ayip Komarudin, S.Pd.</small>" },
-            { jam: "09:10 - 09:50", senin: "ISTIRAHAT", selasa: "ISTIRAHAT", rabu: "ISTIRAHAT", kamis: "ISTIRAHAT", jumat: "ISTIRAHAT" },
-            { jam: "09:50 - 10:30", senin: "Bahasa Inggris", selasa: "Bahasa Indonesia", rabu: "Bahasa Sunda<br><small>Tita Rosita Awais, S.Pd.</small>", kamis: "Pendidikan Olahraga<br><small>Gunarti S., S.Pd.</small>", jumat: "Sejarah<br><small>Lin Herlina, S.Ag.</small>" },
-            { jam: "10:30 - 11:10", senin: "Bahasa Inggris", selasa: "Sejarah<br><small>Lin Herlina, S.Ag.</small>", rabu: "Bahasa Inggris<br><small>Elin Yohana, S.Pd.</small>", kamis: "Pendidikan Olahraga<br><small>Gunarti S., S.Pd.</small>", jumat: "Sejarah<br><small>Lin Herlina, S.Ag.</small>" },
-            { jam: "11:10 - 11:45", senin: "Bahasa Inggris", selasa: "Sejarah<br><small>Lin Herlina, S.Ag.</small>", rabu: "Bahasa Inggris<br><small>Elin Yohana, S.Pd.</small>", kamis: "Seni<br><small>Ayip Komarudin, S.Pd.</small>", jumat: "Sholat Jumat" },
-            { jam: "11:45 - 12:35", senin: "SHOLAT DZUHUR", selasa: "SHOLAT DZUHUR", rabu: "SHOLAT DZUHUR", kamis: "SHOLAT DZUHUR", jumat: "Sholat Jumat" },
-            { jam: "12:35 - 13:15", senin: "Matematika", selasa: "Matematika", rabu: "Bahasa Inggris<br><small>Elin Yohana, S.Pd.</small>", kamis: "Seni<br><small>Ayip Komarudin, S.Pd.</small>", jumat: "Ekstrakurikuler" },
-            { jam: "13:15 - 13:55", senin: "Matematika", selasa: "Matematika", rabu: "Bahasa Inggris<br><small>Elin Yohana, S.Pd.</small>", kamis: "Pendidikan Agama<br><small>Neni Nurhenti, S.Ag.</small>", jumat: "Ekstrakurikuler" },
-            { jam: "13:55 - 14:35", senin: "Matematika", selasa: "Matematika", rabu: "Pendidikan Agama<br><small>Neni Nurhenti, S.Ag.</small>", kamis: "Pendidikan Agama<br><small>Neni Nurhenti, S.Ag.</small>", jumat: "Ekstrakurikuler" },
-            { jam: "14:35 - 15:15", senin: "-", selasa: "-", rabu: "Pendidikan Agama<br><small>Neni Nurhenti, S.Ag.</small>", kamis: "Pendidikan Agama<br><small>Neni Nurhenti, S.Ag.</small>", jumat: "Ekstrakurikuler" },
-            { jam: "15:15 - 15:55", senin: "-", selasa: "-", rabu: "Pendidikan Agama<br><small>Neni Nurhenti, S.Ag.</small>", kamis: "Pendidikan Agama<br><small>Neni Nurhenti, S.Ag.</small>", jumat: "Ekstrakurikuler" }
-        ];
-
-        let currentJadwal = 'ganjil';
-
-        // Data jadwal piket (8 siswa per hari, 5 hari)
-        const jadwalPiket = {
-            "Senin": [
-                { nama: "ADISYA CHESTA PUTRI", nis: "102522716", jk: "P", absen: 1 },
-                { nama: "IZAZ SAHRUL HUZAZI", nis: "102522732", jk: "L", absen: 17 },
-                { nama: "GITA SASKIA DEWI", nis: "102522730", jk: "P", absen: 15 },
-                { nama: "KAYLA NANDA AULIA AZZAHRA", nis: "102522733", jk: "P", absen: 18 },
-                { nama: "MUHAMMAD SAMHAN", nis: "102522736", jk: "L", absen: 21 },
-                { nama: "THALITA NURUL AZIZAH", nis: "102522750", jk: "P", absen: 35 },
-                { nama: "ARGHA NAUFFA SAKHA", nis: "102522721", jk: "L", absen: 6 },
-                { nama: "FAZIA QAISARA SHAESTA", nis: "102522729", jk: "P", absen: 14 }
-            ],
-            "Selasa": [
-                { nama: "NISA ISMY AFINWARO", nis: "102522740", jk: "P", absen: 25 },
-                { nama: "REPANA PIRDAUS", nis: "102522744", jk: "L", absen: 29 },
-                { nama: "AZZAHRA NUR SHAFARATUL", nis: "102522726", jk: "P", absen: 11 },
-                { nama: "AULIA DEWI YULIANI", nis: "102522723", jk: "P", absen: 8 },
-                { nama: "ALYA HANIFAH AZZAHRA", nis: "102522718", jk: "P", absen: 3 },
-                { nama: "PUTRI VIA", nis: "102522741", jk: "P", absen: 26 },
-                { nama: "MUHAMMAD AKMAL NURHAKIM", nis: "102522735", jk: "L", absen: 20 },
-                { nama: "NAMIRA FAYZA FITRIA", nis: "102522739", jk: "P", absen: 24 }
-            ],
-            "Rabu": [
-                { nama: "REVAN BAGUS UTAMA", nis: "102522746", jk: "L", absen: 31 },
-                { nama: "AIRA NUR AGUSTINA", nis: "102522717", jk: "P", absen: 2 },
-                { nama: "VALIANT JOE OCTAVIANO", nis: "102522751", jk: "L", absen: 36 },
-                { nama: "YENI FEBRIYANTI", nis: "102522754", jk: "P", absen: 39 },
-                { nama: "AMELIA PUTRI LESTARI", nis: "102522719", jk: "P", absen: 4 },
-                { nama: "NABILA SALSABIL", nis: "102522737", jk: "P", absen: 22 },
-                { nama: "WINDY NATASHA PUTRI", nis: "102522752", jk: "P", absen: 37 },
-                { nama: "EILLSHA EILLA", nis: "102522728", jk: "P", absen: 13 }
-            ],
-            "Kamis": [
-                { nama: "IRFAN HAKIM", nis: "102522731", jk: "L", absen: 16 },
-                { nama: "NABILLA DAMAYANTI", nis: "102522738", jk: "P", absen: 23 },
-                { nama: "REVAN MUCHLIS SETIAWAN", nis: "102522747", jk: "L", absen: 32 },
-                { nama: "ZALIANTY SABRINA RISMALIKA", nis: "102522755", jk: "P", absen: 40 },
-                { nama: "SRI INDAH HUMAROH", nis: "102522749", jk: "P", absen: 34 },
-                { nama: "DINA NABILAH", nis: "102522727", jk: "P", absen: 12 },
-                { nama: "RICHA DESUITA", nis: "102522748", jk: "P", absen: 33 },
-                { nama: "WINDY OKTAVIANI SUHERMAN PUTRI", nis: "102522753", jk: "P", absen: 38 }
-            ],
-            "Jumat": [
-                { nama: "ANINDYA NUR FITRIANA", nis: "102522720", jk: "P", absen: 5 },
-                { nama: "AZHAR ALI SULAIMAN KESUMA", nis: "102522725", jk: "L", absen: 10 },
-                { nama: "KHAIFA SOFIA AZZAHRA", nis: "102522734", jk: "P", absen: 19 },
-                { nama: "ASTI SUCI ANGGRAENI", nis: "102522722", jk: "P", absen: 7 },
-                { nama: "AURA NOERKUSWATI", nis: "102522724", jk: "P", absen: 9 },
-                { nama: "RESKKY RAMADHANI SURAMIGUNA", nis: "102522745", jk: "L", absen: 30 },
-                { nama: "RAHMITA NURUL HIKMAH", nis: "102522742", jk: "P", absen: 27 },
-                { nama: "RAKAN NURALAM PRATAMA", nis: "102522743", jk: "L", absen: 28 }
-            ]
+        // Jadwal pelajaran
+        let jadwalData = {
+            ganjil: {
+                senin: ["Matematika", "Fisika", "Kimia", "Biologi", "Bahasa Indonesia", "Bahasa Inggris", "Sejarah", "PKN"],
+                selasa: ["Bahasa Indonesia", "Matematika", "Fisika", "Kimia", "Biologi", "Geografi", "Seni Budaya", "Olahraga"],
+                rabu: ["Kimia", "Biologi", "Matematika", "Fisika", "Bahasa Inggris", "Ekonomi", "Sosiologi", "Agama"],
+                kamis: ["Fisika", "Matematika", "Bahasa Indonesia", "Kimia", "Biologi", "Bahasa Inggris", "TIK", "Prakarya"],
+                jumat: ["Agama", "Bahasa Inggris", "Matematika", "Sejarah", "PKN", "BK", "", ""]
+            },
+            genap: {
+                senin: ["Fisika", "Matematika", "Biologi", "Kimia", "Bahasa Inggris", "Bahasa Indonesia", "Geografi", "Ekonomi"],
+                selasa: ["Biologi", "Kimia", "Matematika", "Fisika", "Bahasa Indonesia", "Sejarah", "PKN", "Agama"],
+                rabu: ["Matematika", "Fisika", "Bahasa Inggris", "Biologi", "Kimia", "Seni Budaya", "Olahraga", "TIK"],
+                kamis: ["Bahasa Indonesia", "Bahasa Inggris", "Fisika", "Matematika", "Geografi", "Sosiologi", "Prakarya", "BK"],
+                jumat: ["Agama", "Matematika", "Kimia", "Biologi", "Sejarah", "PKN", "", ""]
+            }
         };
 
-        // Function to show tabs
-        function showTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('[id^="tab-"]').forEach(tab => {
-                tab.classList.remove('bg-blue-500', 'text-white');
-                tab.classList.add('text-gray-600', 'hover:text-blue-500');
-            });
-            
-            // Show selected tab content
-            document.getElementById(`content-${tabName}`).classList.remove('hidden');
-            
-            // Add active class to selected tab
-            const activeTab = document.getElementById(`tab-${tabName}`);
-            activeTab.classList.add('bg-blue-500', 'text-white');
-            activeTab.classList.remove('text-gray-600', 'hover:text-blue-500');
-        }
+        // Jadwal piket
+        const piketData = {
+            senin: ["Ahmad Rizki", "Adelia Putri", "Alya Sari", "Andi Pratama", "Anisa Rahma", "Arif Budiman", "Bella Cantika", "Budi Santoso"],
+            selasa: ["Citra Dewi", "Dani Kurniawan", "Dea Amelia", "Dinda Sari", "Eka Pratiwi", "Fajar Ramadhan", "Fitri Handayani", "Gita Permata"],
+            rabu: ["Hana Safitri", "Ika Sari", "Indra Wijaya", "Jihan Aulia", "Karina Putri", "Lestari Wulan", "Maya Sari", "Nanda Pratama"],
+            kamis: ["Nina Amelia", "Oki Setiawan", "Putri Indah", "Qori Ramadhani", "Rani Safitri", "Reza Pratama", "Sari Dewi", "Tari Wulandari"],
+            jumat: ["Uci Rahayu", "Vina Amelia", "Wawan Setiawan", "Xenia Putri", "Yani Sari", "Yoga Pratama", "Zara Amelia", "Zidan Ramadhan"]
+        };
 
-        // Generate siswa cards
-        function generateSiswaCards() {
-            const container = document.querySelector('#content-siswa .grid');
-            container.innerHTML = '';
-            
-            siswaData.forEach(siswa => {
-                const card = document.createElement('div');
-                card.className = 'bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4 hover:shadow-lg hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 transition-all cursor-pointer transform hover:scale-105';
-                card.onclick = () => showStudentDetail(siswa.absen);
-                card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="relative">
-                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(siswa.nama)}&background=${siswa.jk === 'L' ? '3b82f6' : 'ec4899'}&color=fff&size=40&font-size=0.33&rounded=true" 
-                                 alt="Foto ${siswa.nama}" 
-                                 class="w-10 h-10 rounded-full border-2 ${siswa.jk === 'L' ? 'border-blue-200' : 'border-pink-200'}"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="w-10 h-10 rounded-full ${siswa.jk === 'L' ? 'bg-blue-500' : 'bg-pink-500'} flex items-center justify-center text-white font-bold text-sm hidden">
-                                ${siswa.absen}
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="font-semibold text-gray-800 text-sm">${siswa.nama}</h3>
-                            <p class="text-xs text-gray-500 mb-1">NIS: ${siswa.nis}</p>
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs px-2 py-1 rounded-full ${siswa.jk === 'L' ? 'bg-blue-100 text-blue-700' : 'bg-pink-100 text-pink-700'}">${siswa.jk === 'L' ? '👨 Laki-laki' : '👩 Perempuan'}</span>
-                                <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">No. ${siswa.absen}</span>
-                            </div>
-                        </div>
-                        <div class="text-blue-400 opacity-60">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Function untuk menampilkan jadwal berdasarkan minggu
-        function showJadwal(tipe) {
-            currentJadwal = tipe;
-            
-            // Update button styles
-            const btnGanjil = document.getElementById('btn-ganjil');
-            const btnGenap = document.getElementById('btn-genap');
-            
-            if (tipe === 'ganjil') {
-                btnGanjil.className = 'px-4 py-2 rounded-lg font-medium transition-colors bg-blue-500 text-white';
-                btnGenap.className = 'px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300';
-            } else {
-                btnGanjil.className = 'px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-gray-300';
-                btnGenap.className = 'px-4 py-2 rounded-lg font-medium transition-colors bg-blue-500 text-white';
-            }
-            
-            generateJadwalTable();
-        }
-
-        // Generate jadwal pelajaran table
-        function generateJadwalTable() {
-            const tbody = document.getElementById('jadwal-table');
-            tbody.innerHTML = '';
-            
-            const jadwalData = currentJadwal === 'ganjil' ? jadwalGanjil : jadwalGenap;
-            
-            jadwalData.forEach(jadwal => {
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-gray-50';
-                
-                const isIstirahat = jadwal.senin === 'ISTIRAHAT';
-                const isIshoma = jadwal.senin === 'ISHOMA';
-                let rowClass = '';
-                
-                if (isIstirahat) {
-                    rowClass = 'bg-yellow-50';
-                } else if (isIshoma) {
-                    rowClass = 'bg-orange-50';
-                }
-                
-                row.innerHTML = `
-                    <td class="border border-gray-300 px-4 py-3 font-medium ${rowClass}">${jadwal.jam}</td>
-                    <td class="border border-gray-300 px-4 py-3 text-left ${rowClass}">${jadwal.senin}</td>
-                    <td class="border border-gray-300 px-4 py-3 text-left ${rowClass}">${jadwal.selasa}</td>
-                    <td class="border border-gray-300 px-4 py-3 text-left ${rowClass}">${jadwal.rabu}</td>
-                    <td class="border border-gray-300 px-4 py-3 text-left ${rowClass}">${jadwal.kamis}</td>
-                    <td class="border border-gray-300 px-4 py-3 text-left ${rowClass}">${jadwal.jumat}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        // Generate jadwal piket
-        function generateJadwalPiket() {
-            const container = document.querySelector('#content-piket .grid');
-            container.innerHTML = '';
-            
-            Object.entries(jadwalPiket).forEach(([hari, siswaList]) => {
-                const card = document.createElement('div');
-                card.className = 'bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6';
-                
-                let siswaHTML = '';
-                siswaList.forEach(siswa => {
-                    siswaHTML += `
-                        <div class="flex items-center gap-2 py-1">
-                            <span class="w-6 h-6 rounded-full ${siswa.jk === 'L' ? 'bg-blue-500' : 'bg-pink-500'} text-white text-xs flex items-center justify-center font-bold">${siswa.absen}</span>
-                            <span class="text-sm text-gray-700">${siswa.nama}</span>
-                        </div>
-                    `;
-                });
-                
-                card.innerHTML = `
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        🗓️ ${hari}
-                    </h3>
-                    <div class="space-y-1">
-                        ${siswaHTML}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Data pemberitahuan
-        let pemberitahuanData = [
+        // Pengumuman
+        let pengumumanData = [
             {
                 id: 1,
                 judul: "Ujian Tengah Semester",
-                isi: "Ujian Tengah Semester akan dilaksanakan pada tanggal 15-20 November 2024. Harap persiapkan diri dengan baik.",
-                kategori: "ujian",
-                prioritas: "tinggi",
-                tanggal: "2024-11-10",
-                waktu: "08:30"
+                isi: "Ujian Tengah Semester akan dilaksanakan mulai tanggal 15-20 Oktober 2024. Harap mempersiapkan diri dengan baik.",
+                tanggal: "2024-10-01",
+                prioritas: "penting"
             },
             {
                 id: 2,
-                judul: "Tugas Pemrograman Web",
-                isi: "Tugas membuat website portfolio harus dikumpulkan paling lambat tanggal 25 November 2024.",
-                kategori: "tugas",
-                prioritas: "sedang",
-                tanggal: "2024-11-08",
-                waktu: "14:15"
+                judul: "Pengumpulan Tugas Matematika",
+                isi: "Tugas Matematika Bab 3 dikumpulkan paling lambat hari Jumat, 11 Oktober 2024.",
+                tanggal: "2024-10-08",
+                prioritas: "info"
             },
             {
                 id: 3,
-                judul: "Kegiatan Class Meeting",
-                isi: "Class Meeting akan diadakan pada tanggal 30 November - 2 Desember 2024. Daftarkan tim kalian segera!",
-                kategori: "acara",
-                prioritas: "rendah",
-                tanggal: "2024-11-05",
-                waktu: "10:00"
+                judul: "Libur Nasional",
+                isi: "Sekolah libur pada tanggal 28 Oktober 2024 dalam rangka memperingati Hari Sumpah Pemuda.",
+                tanggal: "2024-10-25",
+                prioritas: "info"
             }
         ];
 
-        let nextId = 4;
-        let isAdminLoggedIn = false;
+        // State management
+        let isLoggedIn = false;
+        let currentMinggu = 'ganjil';
 
-        // Admin credentials (dalam aplikasi nyata, ini harus disimpan dengan aman)
-        const adminCredentials = {
-            username: 'XPPLG1',
-            password: 'XPPLG1MANIA'
-        };
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            renderSiswa();
+            renderJadwal();
+            renderPiket();
+            renderPengumuman();
+            setupEventListeners();
+        });
 
-        // Function untuk show login modal
-        function showLoginModal() {
-            document.getElementById('login-modal').classList.remove('hidden');
-        }
+        // Event listeners
+        function setupEventListeners() {
+            // Tab navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tab = this.dataset.tab;
+                    switchTab(tab);
+                });
+            });
 
-        // Function untuk close login modal
-        function closeLoginModal() {
-            document.getElementById('login-modal').classList.add('hidden');
-            document.getElementById('admin-username').value = '';
-            document.getElementById('admin-password').value = '';
-        }
+            // Minggu toggle
+            document.getElementById('mingguGanjil').addEventListener('click', function() {
+                currentMinggu = 'ganjil';
+                updateMingguButtons();
+                renderJadwal();
+            });
 
-        // Function untuk login admin
-        function loginAdmin() {
-            const username = document.getElementById('admin-username').value.trim();
-            const password = document.getElementById('admin-password').value.trim();
+            document.getElementById('mingguGenap').addEventListener('click', function() {
+                currentMinggu = 'genap';
+                updateMingguButtons();
+                renderJadwal();
+            });
 
-            if (username === adminCredentials.username && password === adminCredentials.password) {
-                isAdminLoggedIn = true;
-                closeLoginModal();
-                updateAdminUI();
-                showNotification('Login berhasil! Selamat datang Admin.', 'success');
-            } else {
-                showNotification('Username atau password salah!', 'error');
-            }
-        }
+            // Admin login
+            document.getElementById('adminBtn').addEventListener('click', function() {
+                if (isLoggedIn) {
+                    document.getElementById('adminModal').classList.remove('hidden');
+                    document.getElementById('adminModal').classList.add('flex');
+                } else {
+                    document.getElementById('loginModal').classList.remove('hidden');
+                    document.getElementById('loginModal').classList.add('flex');
+                }
+            });
 
-        // Function untuk logout admin
-        function logoutAdmin() {
-            if (confirm('Apakah Anda yakin ingin logout?')) {
-                isAdminLoggedIn = false;
-                updateAdminUI();
-                showNotification('Logout berhasil!', 'success');
-            }
-        }
-
-        // Function untuk update UI berdasarkan status admin
-        function updateAdminUI() {
-            const adminLoginBtn = document.getElementById('admin-login-btn');
-            const adminStatusTop = document.getElementById('admin-status-top');
-            const formPemberitahuan = document.getElementById('form-pemberitahuan');
-            const aksesTerbatas = document.getElementById('akses-terbatas');
-            const adminControls = document.getElementById('admin-controls');
-
-            if (isAdminLoggedIn) {
-                adminLoginBtn.classList.add('hidden');
-                adminStatusTop.classList.remove('hidden');
-                formPemberitahuan.classList.remove('hidden');
-                aksesTerbatas.classList.add('hidden');
-                adminControls.classList.remove('hidden');
-            } else {
-                adminLoginBtn.classList.remove('hidden');
-                adminStatusTop.classList.add('hidden');
-                formPemberitahuan.classList.add('hidden');
-                aksesTerbatas.classList.remove('hidden');
-                adminControls.classList.add('hidden');
-            }
-            
-            // Update tombol hapus di pemberitahuan
-            generatePemberitahuan();
-        }
-
-        // Function untuk menambah pemberitahuan
-        function tambahPemberitahuan() {
-            if (!isAdminLoggedIn) {
-                showNotification('Hanya admin yang dapat menambah pemberitahuan!', 'error');
-                return;
-            }
-
-            const judul = document.getElementById('judul-notif').value.trim();
-            const isi = document.getElementById('isi-notif').value.trim();
-            const kategori = document.getElementById('kategori-notif').value;
-            const prioritas = document.getElementById('prioritas-notif').value;
-
-            if (!judul || !isi) {
-                showNotification('Harap isi judul dan isi pemberitahuan!', 'error');
-                return;
-            }
-
-            const now = new Date();
-            const tanggal = now.toISOString().split('T')[0];
-            const waktu = now.toTimeString().split(' ')[0].substring(0, 5);
-
-            const pemberitahuanBaru = {
-                id: nextId++,
-                judul: judul,
-                isi: isi,
-                kategori: kategori,
-                prioritas: prioritas,
-                tanggal: tanggal,
-                waktu: waktu
-            };
-
-            pemberitahuanData.unshift(pemberitahuanBaru);
-            generatePemberitahuan();
-
-            // Reset form
-            document.getElementById('judul-notif').value = '';
-            document.getElementById('isi-notif').value = '';
-            document.getElementById('kategori-notif').value = 'umum';
-            document.getElementById('prioritas-notif').value = 'rendah';
-
-            // Show success message
-            showNotification('Pemberitahuan berhasil ditambahkan!', 'success');
-        }
-
-        // Function untuk menghapus pemberitahuan
-        function hapusPemberitahuan(id) {
-            if (!isAdminLoggedIn) {
-                showNotification('Hanya admin yang dapat menghapus pemberitahuan!', 'error');
-                return;
-            }
-
-            pemberitahuanData = pemberitahuanData.filter(item => item.id !== id);
-            generatePemberitahuan();
-            showNotification('Pemberitahuan berhasil dihapus!', 'success');
-        }
-
-        // Function untuk generate pemberitahuan
-        function generatePemberitahuan() {
-            const container = document.getElementById('daftar-pemberitahuan');
-            
-            if (pemberitahuanData.length === 0) {
-                container.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada pemberitahuan</p>';
-                return;
-            }
-
-            container.innerHTML = '';
-            
-            pemberitahuanData.forEach(notif => {
-                const kategoriIcons = {
-                    'umum': '📢',
-                    'tugas': '📝',
-                    'ujian': '📊',
-                    'acara': '🎉',
-                    'penting': '⚠️'
-                };
-
-                const prioritasColors = {
-                    'rendah': 'border-l-green-500 bg-green-50',
-                    'sedang': 'border-l-yellow-500 bg-yellow-50',
-                    'tinggi': 'border-l-red-500 bg-red-50'
-                };
-
-                const prioritasText = {
-                    'rendah': '🟢 Rendah',
-                    'sedang': '🟡 Sedang',
-                    'tinggi': '🔴 Tinggi'
-                };
-
-                const card = document.createElement('div');
-                card.className = `border-l-4 ${prioritasColors[notif.prioritas]} rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow`;
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
                 
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="text-lg">${kategoriIcons[notif.kategori]}</span>
-                            <h3 class="font-semibold text-gray-800">${notif.judul}</h3>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs px-2 py-1 rounded-full bg-gray-200 text-gray-700">${prioritasText[notif.prioritas]}</span>
-                            ${isAdminLoggedIn ? `<button onclick="hapusPemberitahuan(${notif.id})" class="text-red-500 hover:text-red-700 text-sm">
-                                🗑️
-                            </button>` : ''}
-                        </div>
-                    </div>
-                    <p class="text-gray-700 mb-3">${notif.isi}</p>
-                    <div class="flex justify-between items-center text-xs text-gray-500">
-                        <span>📅 ${formatTanggal(notif.tanggal)}</span>
-                        <span>🕐 ${notif.waktu}</span>
-                    </div>
-                `;
+                if (username === 'admin' && password === 'admin123') {
+                    isLoggedIn = true;
+                    document.getElementById('loginModal').classList.add('hidden');
+                    document.getElementById('adminModal').classList.remove('hidden');
+                    document.getElementById('adminModal').classList.add('flex');
+                    document.getElementById('adminBtn').innerHTML = '<i class="fas fa-user-shield mr-2"></i>Panel Admin';
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                } else {
+                    alert('Username atau password salah!');
+                }
+            });
+
+            // Cancel login
+            document.getElementById('cancelLogin').addEventListener('click', function() {
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            });
+
+            // Close admin panel
+            document.getElementById('closeAdmin').addEventListener('click', function() {
+                document.getElementById('adminModal').classList.add('hidden');
+            });
+
+            // Close detail siswa modal
+            document.getElementById('closeDetailSiswa').addEventListener('click', function() {
+                document.getElementById('detailSiswaModal').classList.add('hidden');
+            });
+
+            // Logout admin
+            document.getElementById('logoutAdmin').addEventListener('click', function() {
+                isLoggedIn = false;
+                document.getElementById('adminModal').classList.add('hidden');
+                document.getElementById('adminBtn').innerHTML = '<i class="fas fa-user-shield mr-2"></i>Admin';
+            });
+
+            // Update jadwal
+            document.getElementById('updateJadwal').addEventListener('click', function() {
+                const hari = document.getElementById('editHari').value;
+                const jam = parseInt(document.getElementById('editJam').value);
+                const minggu = document.getElementById('editMinggu').value;
+                const mapel = document.getElementById('editMapel').value;
                 
-                container.appendChild(card);
+                if (mapel.trim()) {
+                    jadwalData[minggu][hari][jam] = mapel;
+                    renderJadwal();
+                    alert('Jadwal berhasil diupdate!');
+                    document.getElementById('editMapel').value = '';
+                }
+            });
+
+            // Tambah pengumuman
+            document.getElementById('tambahPengumuman').addEventListener('click', function() {
+                const judul = document.getElementById('judulPengumuman').value;
+                const isi = document.getElementById('isiPengumuman').value;
+                const prioritas = document.getElementById('prioritasPengumuman').value;
+                
+                if (judul.trim() && isi.trim()) {
+                    const newId = Math.max(...pengumumanData.map(p => p.id)) + 1;
+                    pengumumanData.unshift({
+                        id: newId,
+                        judul: judul,
+                        isi: isi,
+                        tanggal: new Date().toISOString().split('T')[0],
+                        prioritas: prioritas
+                    });
+                    renderPengumuman();
+                    alert('Pengumuman berhasil ditambahkan!');
+                    document.getElementById('judulPengumuman').value = '';
+                    document.getElementById('isiPengumuman').value = '';
+                }
             });
         }
 
-        // Function untuk format tanggal
-        function formatTanggal(tanggal) {
-            const date = new Date(tanggal);
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            return date.toLocaleDateString('id-ID', options);
+        // Tab switching
+        function switchTab(activeTab) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-indigo-800');
+            });
+            
+            document.getElementById(activeTab).classList.remove('hidden');
+            document.querySelector(`[data-tab="${activeTab}"]`).classList.add('active', 'bg-indigo-800');
         }
 
-        // Function untuk show notification
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white font-medium z-50 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
-            notification.textContent = message;
+        // Update minggu buttons
+        function updateMingguButtons() {
+            document.querySelectorAll('.minggu-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-gray-300', 'text-gray-700');
+            });
             
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
+            if (currentMinggu === 'ganjil') {
+                document.getElementById('mingguGanjil').classList.remove('bg-gray-300', 'text-gray-700');
+                document.getElementById('mingguGanjil').classList.add('bg-indigo-600', 'text-white');
+            } else {
+                document.getElementById('mingguGenap').classList.remove('bg-gray-300', 'text-gray-700');
+                document.getElementById('mingguGenap').classList.add('bg-indigo-600', 'text-white');
+            }
         }
 
-        // Function untuk menampilkan detail siswa
-        function showStudentDetail(absen) {
+        // Render functions
+        function renderSiswa() {
+            const container = document.getElementById('siswaList');
+            container.innerHTML = siswaData.map(siswa => `
+                <div class="bg-gradient-to-r ${siswa.jk === 'L' ? 'from-blue-50 to-blue-100 border-blue-200' : 'from-pink-50 to-pink-100 border-pink-200'} border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer" onclick="showDetailSiswa(${siswa.absen})">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 ${siswa.jk === 'L' ? 'bg-blue-500' : 'bg-pink-500'} rounded-full flex items-center justify-center text-white font-bold">
+                            ${siswa.absen}
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">${siswa.nama}</h3>
+                            <p class="text-sm text-gray-600">
+                                <i class="fas ${siswa.jk === 'L' ? 'fa-mars text-blue-500' : 'fa-venus text-pink-500'} mr-1"></i>
+                                ${siswa.jk === 'L' ? 'Laki-laki' : 'Perempuan'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderJadwal() {
+            const container = document.getElementById('jadwalTable');
+            const jamPelajaran = [
+                "07:00-07:45", "07:45-08:30", "08:30-09:15", "09:30-10:15",
+                "10:15-11:00", "11:00-11:45", "12:30-13:15", "13:15-14:00"
+            ];
+            
+            const schedule = jadwalData[currentMinggu];
+            
+            container.innerHTML = jamPelajaran.map((jam, index) => `
+                <tr class="${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}">
+                    <td class="border border-gray-300 px-4 py-2 font-medium">${jam}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">${schedule.senin[index] || '-'}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">${schedule.selasa[index] || '-'}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">${schedule.rabu[index] || '-'}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">${schedule.kamis[index] || '-'}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">${schedule.jumat[index] || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderPiket() {
+            const container = document.getElementById('piketList');
+            const hari = ['senin', 'selasa', 'rabu', 'kamis', 'jumat'];
+            const namaHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+            const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500'];
+            
+            container.innerHTML = hari.map((day, index) => `
+                <div class="bg-white border rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-4 h-4 ${colors[index]} rounded-full mr-3"></div>
+                        <h3 class="text-lg font-bold text-gray-800">${namaHari[index]}</h3>
+                    </div>
+                    <div class="space-y-2">
+                        ${piketData[day].map(nama => `
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-user-check text-green-500 text-sm"></i>
+                                <span class="text-gray-700">${nama}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderPengumuman() {
+            const container = document.getElementById('pengumumanList');
+            
+            if (pengumumanData.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i class="fas fa-bullhorn text-4xl mb-4"></i>
+                        <p>Belum ada pengumuman</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = pengumumanData.map(pengumuman => {
+                const prioritasColors = {
+                    info: 'bg-blue-100 text-blue-800 border-blue-200',
+                    penting: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                    urgent: 'bg-red-100 text-red-800 border-red-200'
+                };
+                
+                const prioritasIcons = {
+                    info: 'fa-info-circle',
+                    penting: 'fa-exclamation-triangle',
+                    urgent: 'fa-exclamation-circle'
+                };
+                
+                return `
+                    <div class="border rounded-lg p-6 hover:shadow-md transition-shadow ${prioritasColors[pengumuman.prioritas]}">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-lg font-bold">${pengumuman.judul}</h3>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 rounded-full text-xs font-medium ${prioritasColors[pengumuman.prioritas]}">
+                                    <i class="fas ${prioritasIcons[pengumuman.prioritas]} mr-1"></i>
+                                    ${pengumuman.prioritas.toUpperCase()}
+                                </span>
+                                ${isLoggedIn ? `<button onclick="hapusPengumuman(${pengumuman.id})" class="text-red-500 hover:text-red-700 ml-2" title="Hapus Pengumuman">
+                                    <i class="fas fa-trash"></i>
+                                </button>` : ''}
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-3">${pengumuman.isi}</p>
+                        <div class="text-sm text-gray-600">
+                            <i class="fas fa-calendar-alt mr-1"></i>
+                            ${new Date(pengumuman.tanggal).toLocaleDateString('id-ID', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Show detail siswa
+        function showDetailSiswa(absen) {
             const siswa = siswaData.find(s => s.absen === absen);
             if (!siswa) return;
 
-            // Update modal content
-            document.getElementById('student-name').textContent = siswa.nama;
-            document.getElementById('student-nis').textContent = siswa.nis;
-            document.getElementById('student-absen').textContent = siswa.absen;
-            document.getElementById('student-gender').textContent = siswa.jk === 'L' ? '👨 Laki-laki' : '👩 Perempuan';
+            const content = document.getElementById('detailSiswaContent');
+            content.innerHTML = `
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 ${siswa.jk === 'L' ? 'bg-blue-500' : 'bg-pink-500'} rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
+                        ${siswa.absen}
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">${siswa.nama}</h3>
+                    <p class="text-gray-600">
+                        <i class="fas ${siswa.jk === 'L' ? 'fa-mars text-blue-500' : 'fa-venus text-pink-500'} mr-1"></i>
+                        ${siswa.jk === 'L' ? 'Laki-laki' : 'Perempuan'}
+                    </p>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-id-card text-indigo-500 w-5"></i>
+                        <div>
+                            <p class="text-sm text-gray-600">NISN</p>
+                            <p class="font-medium">${siswa.nisn}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-birthday-cake text-indigo-500 w-5"></i>
+                        <div>
+                            <p class="text-sm text-gray-600">Tempat, Tanggal Lahir</p>
+                            <p class="font-medium">${siswa.ttl}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-home text-indigo-500 w-5 mt-1"></i>
+                        <div>
+                            <p class="text-sm text-gray-600">Alamat</p>
+                            <p class="font-medium">${siswa.alamat}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-users text-indigo-500 w-5"></i>
+                        <div>
+                            <p class="text-sm text-gray-600">Orang Tua/Wali</p>
+                            <p class="font-medium">${siswa.ortu}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-phone text-indigo-500 w-5"></i>
+                        <div>
+                            <p class="text-sm text-gray-600">No. Telepon</p>
+                            <p class="font-medium">${siswa.telp}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-            // Update photo/avatar
-            const photo = document.getElementById('student-photo');
-            const avatar = document.getElementById('student-avatar');
-            
-            photo.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(siswa.nama)}&background=${siswa.jk === 'L' ? '3b82f6' : 'ec4899'}&color=fff&size=96&font-size=0.33&rounded=true`;
-            photo.className = `w-24 h-24 rounded-full border-4 ${siswa.jk === 'L' ? 'border-blue-200' : 'border-pink-200'} mx-auto mb-4`;
-            
-            avatar.className = `w-24 h-24 rounded-full ${siswa.jk === 'L' ? 'bg-blue-500' : 'bg-pink-500'} flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4 hidden`;
-            avatar.textContent = siswa.absen;
-
-            // Show modal
-            document.getElementById('student-modal').classList.remove('hidden');
+            document.getElementById('detailSiswaModal').classList.remove('hidden');
+            document.getElementById('detailSiswaModal').classList.add('flex');
         }
 
-        // Function untuk menutup modal detail siswa
-        function closeStudentModal() {
-            document.getElementById('student-modal').classList.add('hidden');
+        // Hapus pengumuman
+        function hapusPengumuman(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')) {
+                pengumumanData = pengumumanData.filter(p => p.id !== id);
+                renderPengumuman();
+            }
         }
-
-        // Event listener untuk Enter key pada login form
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('admin-password').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    loginAdmin();
-                }
-            });
-        });
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            generateSiswaCards();
-            generateJadwalTable();
-            generateJadwalPiket();
-            generatePemberitahuan();
-        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f6a810b206fdea',t:'MTc1NzkyMzkxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f8224854afab65',t:'MTc1NzkzOTQxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
